@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  
+  <title></title>
+
+  <script>
+	// When ready...
+	window.addEventListener("load",function() {
+	  // Set a timeout...
+	  setTimeout(function(){
+	    // Hide the address bar!
+	    window.scrollTo(0, 1);
+	  }, 0);
+	});
+  </script>
+</head>
+<body>
+	<hgroup class="header">
+		<h1>Beer Calculator</h1>
+		<p>Calculate how much bang for your buck you'll get out of your next beer purchase.</p>
+	</hgroup>
+	
+	<section class="main-content">
+		<form class="calc">
+			<select class="quantity">
+				<option value="12">1 Beer</option>
+				<option value="72">6 Pack</option>
+				<option value="144">12 Pack</option>
+				<option value="288">24 Pack</option> 
+				<option value="360">30 Case</option>
+			</select>
+		
+			<div class="input">				
+				<p class="range-counter">
+					<span class="unit">$</span> 
+					<input type="text" id="price-input-val" value="" placeholder="Price" required>
+				</p>
+				
+				<input id="price-input" class="price" type="range" value="0" min="0" max="50" step="1">
+			</div>
+			
+			<div class="input">								
+				<p class="range-counter">
+					<span class="unit">%</span>
+					<input type="text" id="percentage-input-value" value="" placeholder="Percentage" required>
+				</p>
+				
+				<input id="percentage-input" class="percentage" type="range" value="3.2" min="3.2" max="15" step="0.01">
+			</div>
+			
+			<div class="checkbox">
+				<label for="pounder-check">Is your beer pounder cans?</label>
+				<input id="pounder-check" type="checkbox">
+			</div>
+			
+			<button class="submit" type="submit">Calculate</button>
+		</form>
+	</section>
+	
+	<footer class="footer">
+	
+	</footer>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.js"></script> 
+    <script src="http://malsup.github.com/jquery.form.js"></script> 
+
+	<script>
+        $(document).ready(function() { 
+			$("#price-input").change(function() {
+				var price = $(this).val();
+				$("#price-input-val").val(parseFloat(Math.round(price * 100) / 100).toFixed(2));
+				
+		 	});
+			
+			$("#percentage-input").change(function() {
+				var percentage = $(this).val();
+				$("#percentage-input-value").val(parseFloat(Math.round(percentage * 10) / 10).toFixed(1));
+			});
+        
+
+        
+            $('.calc').ajaxForm(function() { 
+				$(".submit").click(function() {
+					$(this).html("Calculating...");
+				});
+			
+            	var quantity = $('.quantity option:selected').val();
+                var price = parseFloat($('.price').val());
+                var percentage = parseFloat($('.percentage').val());
+                var ischecked = $('#pounder-check').attr('checked');
+               
+                function calculate(quantity, price, percentage) {
+	                var costperounce = price / quantity;
+	                var costperpercent = percentage / 100;
+	                var realcost = (costperounce / costperpercent)/10;
+	                var realcostrounded = Math.round(realcost * 100)/100;
+	                var realcostrounded = parseFloat(Math.round(realcost * 100) / 100).toFixed(2);
+	                
+	                return realcostrounded;
+                }
+                
+                if (ischecked == "checked") {
+                	var tempquantity = Math.floor((quantity/3));
+                	var newquantity = parseInt(tempquantity) + parseInt(quantity);
+                	
+                	//console.log(calculate(newquantity, price, percentage));
+                	
+                	alert("Price in % of alcohol: $"+calculate(newquantity, price, percentage));
+                	//price per percentage of pure alcohol
+                	                
+                } else {
+                	//console.log(calculate(quantity, price, percentage));
+                	alert("Price in % of alcohol: $"+calculate(quantity, price, percentage));
+                }
+                
+                // Reset the submit button text
+                $(".submit").html("Calculate");
+                
+            }); 
+            
+        }); 
+	</script>
+</body>
+</html>
