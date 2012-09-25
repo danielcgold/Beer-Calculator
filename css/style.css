@@ -64,5 +64,9 @@ p { color: #555; }
           border-radius: 50px;
 }
 
+footer { margin-top: 40px; text-align: center; font-size: 15px; }
+footer a { color: #333; }
+footer a:hover { color: #f90; }
+
 		
 		
